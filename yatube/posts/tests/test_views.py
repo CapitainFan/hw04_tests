@@ -111,7 +111,7 @@ class PostPagesTests(TestCase):
         )
         self.assertEqual(response.context['post'].text, post_example.text)
         self.assertEqual(response.context['post'].group, self.group)
-
+    
     def test_post_create_page_show_correct_context(self):
         """Шаблон post_create сформирован с правильным контекстом."""
         response = self.authorized_client.get(reverse('posts:post_create'))

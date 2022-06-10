@@ -80,11 +80,11 @@ class PostURLTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
             '/': 'posts/index.html',
-            '/create/': 'posts/create_or_update.html',
+            '/create/': 'posts/create.html',
             '/group/test-slug/': 'posts/group_list.html',
             '/profile/Test_user/': 'posts/profile.html',
             '/posts/1234/': 'posts/post_detail.html',
-            '/posts/1234/edit/': 'posts/create_or_update.html',
+            '/posts/1234/edit/': 'posts/create.html',
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
