@@ -48,12 +48,6 @@ class PostPagesTests(TestCase):
                 'posts:post_detail',
                 kwargs={
                     'post_id': '0'}): 'posts/post_detail.html',
-            reverse(
-                'posts:post_edit',
-                kwargs={
-                    'post_id': '0'}): 'posts/create_or_update.html',
-            reverse(
-                'posts:post_create'): 'posts/create_or_update.html'
         }
         for reverse_name, template in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
