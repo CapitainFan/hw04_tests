@@ -36,6 +36,10 @@ class PostPagesTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         templates_pages_names = {
             reverse(
+                'posts:create'): 'post_create.html',
+            reverse(
+                'posts:edit'): 'posts_edit.html',
+            reverse(
                 'posts:index'): 'posts/index.html',
             reverse(
                 'posts:group_list',
@@ -43,7 +47,7 @@ class PostPagesTests(TestCase):
                     'slug': self.group.slug}): 'posts/group_list.html',
             reverse(
                 'posts:profile',
-                kwargs={'username': self.user}): 'posts/profile.html',
+                kwargs={'username': self.user.username}): 'posts/profile.html',
             reverse(
                 'posts:post_detail',
                 kwargs={
