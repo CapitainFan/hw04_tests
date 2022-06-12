@@ -43,7 +43,7 @@ class PostPagesTests(TestCase):
                     'slug': self.group.slug}): 'posts/group_list.html',
             reverse(
                 'posts:profile',
-                kwargs={'username': self.user}): 'posts/profile.html',
+                kwargs={'username': self.user.username}): 'posts/profile.html',
             reverse(
                 'posts:post_detail',
                 kwargs={
@@ -72,10 +72,10 @@ class PostPagesTests(TestCase):
             reverse('posts:group_list', kwargs={'slug': self.group.slug})
         )
         for object in response.context['page_obj']:
-            post_title = object.group.title
+            post_group_title = object.group.title
             post_slug = object.group.slug
             post_description = object.group.description
-            self.assertEqual(post_title, self.group.title)
+            self.assertEqual(post_group_title, self.group.title)
             self.assertEqual(post_slug, self.group.slug)
             self.assertEqual(post_description, self.group.description)
 

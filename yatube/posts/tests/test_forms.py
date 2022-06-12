@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from ..models import Group, Post
+from http import HTTPStatus
 
 User = get_user_model()
 
@@ -42,14 +43,14 @@ class PostPagesTests(TestCase):
             data=form_data,
             follow=True
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertRedirects(
             response, reverse('posts:profile', kwargs={
                 'username': self.user
             })
         )
         self.assertEqual(Post.objects.count(), 1)
-        post = Post.objects.all()[0]
+        post = Post.objects.first()
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.group.pk, form_data['group'])
         self.assertEqual(post.author, self.user)
