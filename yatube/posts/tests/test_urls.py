@@ -10,6 +10,18 @@ class StaticURLTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
 
+    def test_static_urls_exists_at_desired_location(self):
+        """Страницы доступны любому пользователю."""
+        static_urls = {
+            '/': HTTPStatus.OK,
+            '/about/author/': HTTPStatus.OK,
+            '/about/tech/': HTTPStatus.OK
+        }
+        for address, response_on_url in static_urls.items():
+            with self.subTest(address=address):
+                response = self.guest_client.get(address)
+                self.assertAlmostEqual(response.status_code, response_on_url)
+
     def test_static_pages_have_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         static_templates = {
@@ -50,7 +62,7 @@ class PostURLTests(TestCase):
         static_urls = {
             '/': HTTPStatus.OK,
             '/create/': HTTPStatus.OK,
-            f'group/{self.group.slug}': HTTPStatus.OK,
+            '/group/test-slug/': HTTPStatus.OK,
             '/profile/Test_user/': HTTPStatus.OK,
             '/posts/1234/': HTTPStatus.OK,
             '/posts/1234/edit/': HTTPStatus.OK,

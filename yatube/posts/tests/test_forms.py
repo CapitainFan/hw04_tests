@@ -49,7 +49,7 @@ class PostPagesTests(TestCase):
             })
         )
         self.assertEqual(Post.objects.count(), 1)
-        post = Post.objects.first()
+        post = Post.objects.all()[0]
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.group.pk, form_data['group'])
         self.assertEqual(post.author, self.user)
