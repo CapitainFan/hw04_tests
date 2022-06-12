@@ -50,7 +50,7 @@ class PostURLTests(TestCase):
         static_urls = {
             '/': HTTPStatus.OK,
             '/create/': HTTPStatus.OK,
-            f'group/{self.group.slug}' : HTTPStatus.OK,
+            f'group/{self.group.slug}': HTTPStatus.OK,
             '/profile/Test_user/': HTTPStatus.OK,
             '/posts/1234/': HTTPStatus.OK,
             '/posts/1234/edit/': HTTPStatus.OK,
