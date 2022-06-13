@@ -31,12 +31,13 @@ class PostURLTests(TestCase):
     def test_urls_exists_at_desired_location(self):
         """Проверка страниц на доступность."""
         static_urls = {
-            '/': HTTPStatus.OK, 
-            '/create/': HTTPStatus.OK, 
-            '/group/test-slug/': HTTPStatus.OK, 
-            '/profile/Test_user/': HTTPStatus.OK, 
-            '/posts/1234/': HTTPStatus.OK, 
-            '/posts/1234/edit/': HTTPStatus.OK, 
+            '/': HTTPStatus.OK,
+            '/group/test-slug/': HTTPStatus.OK,
+            '/profile/Test_user/': HTTPStatus.OK,
+            '/posts/1234/': HTTPStatus.OK,
+            '/posts/1234/edit/': HTTPStatus.OK,
+            '/posts/1234/edit': HTTPStatus.MOVED_PERMANENTLY,
+            '/create/': HTTPStatus.OK,
         }
         for address, response_on_url in static_urls.items():
             with self.subTest(address=address):

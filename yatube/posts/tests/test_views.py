@@ -110,12 +110,17 @@ class PostPagesTests(TestCase):
 
     def test_post_edit_page_show_correct_context(self):
         """Шаблон post_edit сформирован с правильным контекстом."""
-        post_example = self.post_list[0]
         response = self.authorized_client.get(
-            reverse('posts:post_edit', kwargs={'post_id': post_example.pk})
+            reverse('posts:post_edit', kwargs={'post_id': '0'})
         )
-        self.assertEqual(response.context['post'].text, post_example.text)
-        self.assertEqual(response.context['post'].group, self.group)
+        form_fields = {
+            'text': forms.fields.CharField,
+            'group': forms.models.ModelChoiceField,
+        }
+        for value, expected in form_fields.items():
+            with self.subTest(value=value):
+                form_object = response.context['form']
+                self.assertIsInstance(form_object, PostForm)
 
     def test_post_create_page_show_correct_context(self):
         """Шаблон post_create сформирован с правильным контекстом."""
