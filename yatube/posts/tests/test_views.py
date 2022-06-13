@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
-
+from ..forms import PostForm
 from ..models import Group, Post
 
 User = get_user_model()
@@ -35,6 +35,11 @@ class PostPagesTests(TestCase):
     def test_pages_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_pages_names = {
+            reverse('posts:post_create'): 'posts/create.html',
+            reverse(
+                'posts:post_edit',
+                kwargs={
+                    'post_id': '0'}): 'posts/create.html',
             reverse(
                 'posts:index'): 'posts/index.html',
             reverse(
@@ -73,11 +78,11 @@ class PostPagesTests(TestCase):
         )
         for object in response.context['page_obj']:
             post_group_title = object.group.title
-            post_slug = object.group.slug
-            post_description = object.group.description
+            post_group_slug = object.group.slug
+            post_group_description = object.group.description
             self.assertEqual(post_group_title, self.group.title)
-            self.assertEqual(post_slug, self.group.slug)
-            self.assertEqual(post_description, self.group.description)
+            self.assertEqual(post_group_slug, self.group.slug)
+            self.assertEqual(post_group_description, self.group.description)
 
     def test_profile_page_show_correct_context(self):
         """Шаблон profile сформирован с правильным контекстом."""
@@ -121,8 +126,8 @@ class PostPagesTests(TestCase):
         }
         for value, expected in form_fields.items():
             with self.subTest(value=value):
-                form_field = response.context['form'].fields[value]
-                self.assertIsInstance(form_field, expected)
+                form_object = response.context['form']
+                self.assertIsInstance(form_object, PostForm)
 
     def test_pages_with_paginator(self):
         """Тестирование страниц с паджинатором."""

@@ -6,23 +6,6 @@ from ..models import Group, Post
 User = get_user_model()
 
 
-class StaticURLTests(TestCase):
-    def setUp(self):
-        self.guest_client = Client()
-
-    def test_static_pages_have_correct_template(self):
-        """URL-адрес использует соответствующий шаблон."""
-        static_templates = {
-            '/': 'posts/index.html',
-            '/about/author/': 'about/author.html',
-            '/about/tech/': 'about/tech.html'
-        }
-        for address, template in static_templates.items():
-            with self.subTest(address=address):
-                response = self.guest_client.get(address)
-                self.assertTemplateUsed(response, template)
-
-
 class PostURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -48,12 +31,12 @@ class PostURLTests(TestCase):
     def test_urls_exists_at_desired_location(self):
         """Проверка страниц на доступность."""
         static_urls = {
-            '/': HTTPStatus.OK,
-            '/create/': HTTPStatus.OK,
-            '/group/test-slug/': HTTPStatus.OK,
-            '/profile/Test_user/': HTTPStatus.OK,
-            '/posts/1234/': HTTPStatus.OK,
-            '/posts/1234/edit/': HTTPStatus.OK,
+            '/': HTTPStatus.OK, 
+            '/create/': HTTPStatus.OK, 
+            '/group/test-slug/': HTTPStatus.OK, 
+            '/profile/Test_user/': HTTPStatus.OK, 
+            '/posts/1234/': HTTPStatus.OK, 
+            '/posts/1234/edit/': HTTPStatus.OK, 
         }
         for address, response_on_url in static_urls.items():
             with self.subTest(address=address):
@@ -62,7 +45,7 @@ class PostURLTests(TestCase):
 
     def test_unexisting_page(self):
         response = self.authorized_client.get('/unexisting_page/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
