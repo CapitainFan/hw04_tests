@@ -28,9 +28,7 @@
       </ul>
     </aside>
       <article class="col-12 col-md-9">
-        <p>
-          {{ post.text }}
-        </p>
+        <p> {{ post.text }} </p>
         {% if user.is_authenticated and post.author == user %}
           <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">редактировать запись</a>
         {% endif %}
