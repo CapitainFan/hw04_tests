@@ -48,7 +48,6 @@ class PostURLTests(TestCase):
             '/posts/1234/': HTTPStatus.OK,
             '/posts/1234/edit/': HTTPStatus.OK,
             '/unexisting_page/': HTTPStatus.NOT_FOUND,
-            # '/posts/1234/create/': HTTPStatus.OK,
         }
         for address, response_on_url in static_urls.items():
             with self.subTest(address=address):
