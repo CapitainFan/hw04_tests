@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -87,8 +86,7 @@ class PostPagesTests(TestCase):
     def test_profile_page_show_correct_context(self):
         """Шаблон profile сформирован с правильным контекстом."""
         response = self.authorized_client.get(
-            reverse('posts:profile', kwargs={'username': self.user})
-        )
+            reverse('posts:profile', kwargs={'username': self.user}))
         for object in response.context['page_obj']:
             post_id = object.id
             post_text = object.text
@@ -110,29 +108,14 @@ class PostPagesTests(TestCase):
 
     def test_post_edit_page_show_correct_context(self):
         """Шаблон post_edit сформирован с правильным контекстом."""
-        response = self.authorized_client.get(
-            reverse('posts:post_edit', kwargs={'post_id': '0'})
-        )
-        form_fields = {
-            'text': forms.fields.CharField,
-            'group': forms.models.ModelChoiceField,
-        }
-        for value, expected in form_fields.items():
-            with self.subTest(value=value):
-                form_object = response.context['form']
-                self.assertIsInstance(form_object, PostForm)
-
-    def test_post_create_page_show_correct_context(self):
         """Шаблон post_create сформирован с правильным контекстом."""
+        response = self.authorized_client.get(
+            reverse('posts:post_edit', kwargs={'post_id': '0'}))
+        form_object = response.context['form']
+        self.assertIsInstance(form_object, PostForm)
         response = self.authorized_client.get(reverse('posts:post_create'))
-        form_fields = {
-            'text': forms.fields.CharField,
-            'group': forms.models.ModelChoiceField,
-        }
-        for value, expected in form_fields.items():
-            with self.subTest(value=value):
-                form_object = response.context['form']
-                self.assertIsInstance(form_object, PostForm)
+        form_object = response.context['form']
+        self.assertIsInstance(form_object, PostForm)
 
     def test_pages_with_paginator(self):
         """Тестирование страниц с паджинатором."""

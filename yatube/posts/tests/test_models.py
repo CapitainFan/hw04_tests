@@ -17,16 +17,17 @@ class PostModelTest(TestCase):
         )
         cls.post = Post.objects.create(
             author=cls.user,
-            text='Тестовая группа',  # Здесь ровно 15 символов
+            text='Тестовая группа номер 1',
         )
 
-    def test_models_have_correct_object_names(self):
-        """Проверяем, что у моделей корректно работает __str__."""
+    def test_models_have_correct_object_names_post(self):
+        """Проверяем, что у модели post корректно работает __str__."""
         post = PostModelTest.post
-        expected = post.text
-        self.assertEqual(expected, self.post.text[:15])
+        post_text = post.text[:15]
+        self.assertEqual(post_text, str(post))
 
-    def test_models_have_correct_group_names(self):
+    def test_models_have_correct_object_names_group(self):
+        """Проверяем, что у модели group корректно работает __str__."""
         group = PostModelTest.group
-        excepted = group.title
-        self.assertEqual(excepted, self.group.title)
+        group_title = group.title
+        self.assertEqual(group_title, str(group))

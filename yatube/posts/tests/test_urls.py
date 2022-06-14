@@ -28,6 +28,16 @@ class PostURLTests(TestCase):
         self.authorized_client = Client(self.user)
         self.authorized_client.force_login(self.user)
 
+    def test_post_create(self):
+        """Страница /create/ доступна авторизованому."""
+        response = self.authorized_client.get('/create/')
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        page_status = {'/create/': HTTPStatus.OK}
+        for page, status in page_status.items():
+            with self.subTest(page=page, status=status):
+                response = self.authorized_client.get(page)
+                self.assertEqual(response.status_code, status)
+
     def test_urls_exists_at_desired_location(self):
         """Проверка страниц на доступность."""
         static_urls = {
@@ -37,15 +47,13 @@ class PostURLTests(TestCase):
             '/profile/Test_user/': HTTPStatus.OK,
             '/posts/1234/': HTTPStatus.OK,
             '/posts/1234/edit/': HTTPStatus.OK,
+            '/unexisting_page/': HTTPStatus.NOT_FOUND,
+            # '/posts/1234/create/': HTTPStatus.OK,
         }
         for address, response_on_url in static_urls.items():
             with self.subTest(address=address):
                 response = self.authorized_client.get(address)
                 self.assertEqual(response.status_code, response_on_url)
-
-    def test_unexisting_page(self):
-        response = self.authorized_client.get('/unexisting_page/')
-        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
