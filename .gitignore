@@ -144,5 +144,14 @@ dmypy.json
 .history/
 
 .mypy_cache
+.vs/
+static/
 
-.media/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+test/
+media/
