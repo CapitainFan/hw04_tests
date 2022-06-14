@@ -28,6 +28,14 @@ class PostURLTests(TestCase):
         self.authorized_client = Client(self.user)
         self.authorized_client.force_login(self.user)
 
+    def test_task_list_url_redirect_anonymous(self):
+        response = self.guest_client.get('/create/')
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+    def test_task_detail_url_redirect_anonymous(self):
+        response = self.guest_client.get('/post_edit/')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
     def test_post_create(self):
         """Страница /create/ доступна авторизованому."""
         response = self.authorized_client.get('/create/')
@@ -43,26 +51,29 @@ class PostURLTests(TestCase):
         static_urls = {
             '/': HTTPStatus.OK,
             '/create/': HTTPStatus.OK,
-            '/group/test-slug/': HTTPStatus.OK,
-            '/profile/Test_user/': HTTPStatus.OK,
-            '/posts/1234/': HTTPStatus.OK,
-            '/posts/1234/edit/': HTTPStatus.OK,
-            '/unexisting_page/': HTTPStatus.NOT_FOUND,
+            f'/group/{self.group.slug}/': HTTPStatus.OK,
+            f'/profile/{self.user.username}/': HTTPStatus.OK,
+            f'/posts/{self.post.id}/': HTTPStatus.OK,
+            f'/posts/{self.post.id}/edit/': HTTPStatus.OK,
         }
         for address, response_on_url in static_urls.items():
             with self.subTest(address=address):
                 response = self.authorized_client.get(address)
                 self.assertEqual(response.status_code, response_on_url)
 
+    def test_unexisting_page(self):
+        response = self.authorized_client.get('/unexisting_page/')
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         templates_url_names = {
             '/': 'posts/index.html',
             '/create/': 'posts/create.html',
-            '/group/test-slug/': 'posts/group_list.html',
-            '/profile/Test_user/': 'posts/profile.html',
-            '/posts/1234/': 'posts/post_detail.html',
-            '/posts/1234/edit/': 'posts/create.html',
+            f'/group/{self.group.slug}/': 'posts/group_list.html',
+            f'/profile/{self.user.username}/': 'posts/profile.html',
+            f'/posts/{self.post.id}/': 'posts/post_detail.html',
+            f'/posts/{self.post.id}/edit/': 'posts/create.html',
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
